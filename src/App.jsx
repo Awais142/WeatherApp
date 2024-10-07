@@ -13,6 +13,7 @@ import {
 import { MdOutlineWbSunny } from "react-icons/md";
 import { WiSunset } from "react-icons/wi";
 import { FiMapPin } from "react-icons/fi";
+import Loader from "./Components/Loader";
 
 function App() {
   const [weather, setWeather] = useState(null);
@@ -107,7 +108,7 @@ function App() {
       {error && <p className="text-red-500">{error}</p>}
 
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <Loader />
       ) : (
         weather && (
           <div className="current-weather bg-white shadow-lg rounded-lg p-6 mb-4 w-full max-w-md">
