@@ -1,10 +1,11 @@
-// src/components/WeatherAlert.jsx
 import React from "react";
 
-const WeatherAlert = ({ message }) => {
-  return (
-    <div className="mt-4 p-2 bg-red-500 text-white rounded">{message}</div>
-  );
-};
+function WeatherAlert({ error }) {
+  return error ? (
+    <div className="alert bg-red-100 text-red-700 p-4 rounded-lg w-full max-w-md mb-4">
+      {error}
+    </div>
+  ) : null;
+}
 
 export default WeatherAlert;

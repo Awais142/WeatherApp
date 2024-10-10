@@ -1,25 +1,35 @@
-// src/components/Forecast.jsx
 import React from "react";
 
-const Forecast = ({ data, unit }) => {
-  const days = data.list.filter((_, index) => index % 8 === 0); // Filter for daily forecasts
-
+function Forecast({ forecast }) {
   return (
-    <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {days.map((day) => {
-        const date = new Date(day.dt * 1000);
-        return (
-          <div key={day.dt} className="p-4 border rounded shadow">
-            <h3 className="font-semibold">{date.toLocaleDateString()}</h3>
-            <p>
-              Temp: {Math.round(day.main.temp)}°{unit === "metric" ? "C" : "F"}
-            </p>
-            <p>Condition: {day.weather[0].description}</p>
-          </div>
-        );
-      })}
+    <div className="forecast bg-white shadow-lg rounded-lg p-6 w-full max-w-md mt-4">
+      <h2 className="text-xl font-semibold">5-Day Forecast</h2>
+      <div className="grid grid-cols-1 gap-4">
+        {forecast.list.map(
+          (item, index) =>
+            index % 8 === 0 && (
+              <div
+                key={index}
+                className="forecast-item bg-gray-200 p-4 rounded-lg flex justify-between items-center"
+              >
+                <div>
+                  <p className="font-bold">
+                    {new Date(item.dt * 1000).toLocaleDateString()}
+                  </p>
+                  <p>{Math.round(item.main.temp)}°C</p>
+                  <p>{item.weather[0].description}</p>
+                </div>
+                <img
+                  src={`http://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
+                  alt={item.weather[0].description}
+                  className="w-12 h-12"
+                />
+              </div>
+            )
+        )}
+      </div>
     </div>
   );
-};
+}
 
 export default Forecast;

@@ -9,6 +9,7 @@ import {
   FaTemperatureHigh,
   FaWind,
   FaSun,
+  FaClock,
 } from "react-icons/fa";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { WiSunset } from "react-icons/wi";
@@ -23,7 +24,6 @@ function App() {
   const [searchTerm, setSearchTerm] = useState(""); // State for search bar input
 
   useEffect(() => {
-    // Get user's location on app load
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
@@ -81,6 +81,12 @@ function App() {
   const convertUnixToTime = (unixTime, timezoneOffset) => {
     const date = new Date((unixTime + timezoneOffset) * 1000);
     return date.toUTCString().slice(-12, -7); // Extract only time in HH:MM format
+  };
+
+  const getLocalTime = (timezoneOffset) => {
+    const now = new Date();
+    const localTime = new Date(now.getTime() + timezoneOffset * 1000);
+    return localTime.toUTCString().slice(-12, -7); // Convert to local time
   };
 
   return (
@@ -160,6 +166,14 @@ function App() {
                   {convertUnixToTime(weather.sys.sunset, weather.timezone)}
                 </p>
               </div>
+            </div>
+
+            {/* Local Time with Clock Icon */}
+            <div className="flex justify-center items-center mt-4">
+              <FaClock className="text-purple-600" />
+              <p className="ml-2">
+                Local Time: {getLocalTime(weather.timezone)}
+              </p>
             </div>
           </div>
         )
