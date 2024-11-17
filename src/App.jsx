@@ -34,27 +34,53 @@ function App() {
   }, []);
 
   const handleSearch = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
     setLoading(true);
-    setError(""); // Clear any previous errors
+    setError("");
+    setAirQuality(null); // Reset air quality data before new search
+
     try {
-      const searchLocation = searchTerm.trim(); // Trim leading/trailing spaces
-      const cityData = await getWeatherData(searchLocation); // Fetch data by city name
-      if (cityData) {
-        setWeather(cityData);
-        const forecastData = await getForecastData(
-          `${cityData.coord.lat},${cityData.coord.lon}`
-        );
-        setForecast(forecastData);
+      const searchLocation = searchTerm.trim();
+      let weatherData;
+      let coordinates;
+
+      if (isNaN(searchLocation.split(",")[0])) {
+        // Search by city name
+        weatherData = await getWeatherData(searchLocation);
+        if (weatherData && weatherData.coord) {
+          coordinates = { lat: weatherData.coord.lat, lon: weatherData.coord.lon };
+        }
       } else {
-        const [lat, lon] = searchLocation.split(",").map(Number); // Parse lat/long
-        const weatherData = await getWeatherDataByLatLon(lat, lon); // Fetch data by lat/lon
+        // Search by coordinates
+        const [lat, lon] = searchLocation.split(",").map(Number);
+        coordinates = { lat, lon };
+        weatherData = await getWeatherDataByLatLon(lat, lon);
+      }
+
+      if (coordinates && coordinates.lat && coordinates.lon) {
+        console.log('Setting weather data:', weatherData);
         setWeather(weatherData);
-        const forecastData = await getForecastData(`${lat},${lon}`);
+        
+        const forecastData = await getForecastData(`${coordinates.lat},${coordinates.lon}`);
+        console.log('Setting forecast data:', forecastData);
         setForecast(forecastData);
+        
+        try {
+          console.log('Fetching air quality data for coordinates:', coordinates);
+          const airQualityData = await getAirQualityData(coordinates.lat, coordinates.lon);
+          console.log('Setting air quality data:', airQualityData);
+          setAirQuality(airQualityData);
+        } catch (airError) {
+          console.error('Error fetching air quality:', airError);
+          setError("Weather data available, but couldn't fetch air quality information.");
+        }
+      } else {
+        throw new Error("Invalid location coordinates");
       }
     } catch (error) {
+      console.error('Search error:', error);
       setError(error.message);
+      setAirQuality(null);
     } finally {
       setLoading(false);
     }
@@ -63,14 +89,32 @@ function App() {
   const fetchWeather = async (lat, lon) => {
     try {
       setLoading(true);
+      setError("");
+      setAirQuality(null); // Reset air quality data before fetching new data
+      
+      console.log('Fetching weather data for coordinates:', { lat, lon });
       const weatherData = await getWeatherDataByLatLon(lat, lon);
+      console.log('Setting weather data:', weatherData);
       setWeather(weatherData);
+      
+      console.log('Fetching forecast data');
       const forecastData = await getForecastData(`${lat},${lon}`);
+      console.log('Setting forecast data:', forecastData);
       setForecast(forecastData);
-      const airQualityData = await getAirQualityData(lat, lon);
-      setAirQuality(airQualityData);
+      
+      try {
+        console.log('Fetching air quality data');
+        const airQualityData = await getAirQualityData(lat, lon);
+        console.log('Setting air quality data:', airQualityData);
+        setAirQuality(airQualityData);
+      } catch (airError) {
+        console.error('Error fetching air quality:', airError);
+        setError("Weather data available, but couldn't fetch air quality information.");
+      }
     } catch (error) {
+      console.error('Fetch weather error:', error);
       setError("Unable to fetch weather data. Please try again.");
+      setAirQuality(null);
     } finally {
       setLoading(false);
     }

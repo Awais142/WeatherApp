@@ -1,5 +1,6 @@
 const API_KEY = "d72cd891e465bae08c93fa435305316f"; // Replace with your actual API key
 const BASE_URL = "https://api.openweathermap.org/data/2.5/"; // Corrected base URL
+const AIR_QUALITY_URL = "https://api.openweathermap.org/data/2.5/air_pollution";
 
 export const getWeatherData = async (query) => {
   try {
@@ -49,11 +50,17 @@ export const getForecastData = async (latLon) => {
 
 export const getAirQualityData = async (lat, lon) => {
   try {
+    console.log(`Fetching air quality data for lat: ${lat}, lon: ${lon}`);
     const response = await fetch(
-      `${BASE_URL}air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+      `${AIR_QUALITY_URL}?lat=${lat}&lon=${lon}&appid=${API_KEY}`
     );
-    if (!response.ok) throw new Error("Could not fetch air quality data");
-    return response.json();
+    if (!response.ok) {
+      console.error('Air quality API response not OK:', response.status);
+      throw new Error("Could not fetch air quality data");
+    }
+    const data = await response.json();
+    console.log('Air quality data received:', data);
+    return data;
   } catch (error) {
     console.error("Error fetching air quality data:", error);
     throw error;
