@@ -114,7 +114,7 @@ function App() {
 
         {loading && <Loader />}
         {error && (
-          <div className="text-red-500 bg-white/80 rounded-lg p-4 mb-4 text-center">
+          <div className="text-red-500 bg-white/90 rounded-lg p-4 mb-4 text-center font-semibold">
             {error}
           </div>
         )}
@@ -122,48 +122,48 @@ function App() {
         {weather && !loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Current Weather Card */}
-            <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
+            <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-3xl font-bold flex items-center gap-2">
-                    <MdOutlineLocationOn className="text-2xl" />
+                    <MdOutlineLocationOn className="text-2xl text-blue-300" />
                     {weather.name}
                   </h2>
-                  <p className="text-lg opacity-90">{weather.sys.country}</p>
+                  <p className="text-lg text-gray-200">{weather.sys.country}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-5xl font-bold">{Math.round(weather.main.temp)}°C</p>
-                  <p className="text-lg">{weather.weather[0].description}</p>
+                  <p className="text-5xl font-bold text-white">{Math.round(weather.main.temp)}°C</p>
+                  <p className="text-lg text-gray-200">{weather.weather[0].description}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                <div className="bg-gray-700/50 p-3 rounded-xl flex items-center gap-2">
                   <WiThermometerExterior className="text-3xl text-blue-300" />
                   <div>
-                    <p className="text-sm opacity-80">Min</p>
-                    <p className="font-semibold">{Math.round(weather.main.temp_min)}°C</p>
+                    <p className="text-xs text-gray-300">Min</p>
+                    <p className="font-semibold text-white">{Math.round(weather.main.temp_min)}°C</p>
                   </div>
                 </div>
-                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                <div className="bg-gray-700/50 p-3 rounded-xl flex items-center gap-2">
                   <WiThermometer className="text-3xl text-red-300" />
                   <div>
-                    <p className="text-sm opacity-80">Max</p>
-                    <p className="font-semibold">{Math.round(weather.main.temp_max)}°C</p>
+                    <p className="text-xs text-gray-300">Max</p>
+                    <p className="font-semibold text-white">{Math.round(weather.main.temp_max)}°C</p>
                   </div>
                 </div>
-                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                <div className="bg-gray-700/50 p-3 rounded-xl flex items-center gap-2">
                   <WiStrongWind className="text-3xl text-gray-300" />
                   <div>
-                    <p className="text-sm opacity-80">Wind</p>
-                    <p className="font-semibold">{weather.wind.speed} m/s</p>
+                    <p className="text-xs text-gray-300">Wind</p>
+                    <p className="font-semibold text-white">{weather.wind.speed} m/s</p>
                   </div>
                 </div>
-                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                <div className="bg-gray-700/50 p-3 rounded-xl flex items-center gap-2">
                   <WiHumidity className="text-3xl text-cyan-300" />
                   <div>
-                    <p className="text-sm opacity-80">Humidity</p>
-                    <p className="font-semibold">{weather.main.humidity}%</p>
+                    <p className="text-xs text-gray-300">Humidity</p>
+                    <p className="font-semibold text-white">{weather.main.humidity}%</p>
                   </div>
                 </div>
               </div>
@@ -171,14 +171,14 @@ function App() {
 
             {/* Air Quality Card */}
             {airQuality && (
-              <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
+              <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-2xl font-bold flex items-center gap-2">
                     <MdAir className="text-2xl text-green-400" />
                     Air Quality Index
                   </h3>
                 </div>
-                <div className="bg-white/10 p-4 rounded-xl">
+                <div className="bg-gray-700/50 p-4 rounded-xl">
                   {airQuality.list && airQuality.list[0] && (
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
@@ -186,39 +186,39 @@ function App() {
                           <p className={`text-2xl font-bold ${getAQIDescription(airQuality.list[0].main.aqi).color}`}>
                             {getAQIDescription(airQuality.list[0].main.aqi).level}
                           </p>
-                          <p className="text-sm opacity-80">
+                          <p className="text-sm text-gray-300">
                             {getAQIDescription(airQuality.list[0].main.aqi).description}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-4xl font-bold">
+                          <p className="text-4xl font-bold text-white">
                             {airQuality.list[0].main.aqi}
                           </p>
-                          <p className="text-sm opacity-80">AQI Value</p>
+                          <p className="text-sm text-gray-300">AQI Value</p>
                         </div>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-4 mt-4">
                         <div>
-                          <p className="text-sm opacity-80">Components</p>
-                          <div className="space-y-2 mt-2">
-                            <p className="flex items-center gap-2">
-                              <WiBarometer className="text-xl" />
+                          <p className="text-sm text-gray-300 mb-2">Components</p>
+                          <div className="space-y-2">
+                            <p className="flex items-center gap-2 text-white">
+                              <WiBarometer className="text-xl text-blue-300" />
                               CO: {airQuality.list[0].components.co} μg/m³
                             </p>
-                            <p className="flex items-center gap-2">
-                              <TbUvIndex className="text-xl" />
+                            <p className="flex items-center gap-2 text-white">
+                              <TbUvIndex className="text-xl text-yellow-300" />
                               NO2: {airQuality.list[0].components.no2} μg/m³
                             </p>
-                            <p className="flex items-center gap-2">
-                              <BsDroplet className="text-xl" />
+                            <p className="flex items-center gap-2 text-white">
+                              <BsDroplet className="text-xl text-cyan-300" />
                               O3: {airQuality.list[0].components.o3} μg/m³
                             </p>
                           </div>
                         </div>
                         <div>
-                          <p className="text-sm opacity-80">Additional</p>
-                          <div className="space-y-2 mt-2">
+                          <p className="text-sm text-gray-300 mb-2">Additional</p>
+                          <div className="space-y-2 text-white">
                             <p>PM2.5: {airQuality.list[0].components.pm2_5} μg/m³</p>
                             <p>PM10: {airQuality.list[0].components.pm10} μg/m³</p>
                             <p>SO2: {airQuality.list[0].components.so2} μg/m³</p>
@@ -232,29 +232,29 @@ function App() {
             )}
 
             {/* Sun Times Card */}
-            <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
+            <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
               <h3 className="text-2xl font-bold mb-4">Sun Schedule</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-white/10 p-4 rounded-xl">
+                <div className="bg-gray-700/50 p-4 rounded-xl">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <WiSunrise className="text-3xl text-yellow-400" />
                       <div>
-                        <p className="text-sm opacity-80">Sunrise</p>
-                        <p className="font-semibold">
+                        <p className="text-xs text-gray-300">Sunrise</p>
+                        <p className="font-semibold text-white">
                           {convertUnixToTime(weather.sys.sunrise, weather.timezone)}
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="bg-white/10 p-4 rounded-xl">
+                <div className="bg-gray-700/50 p-4 rounded-xl">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <WiSunset className="text-3xl text-orange-400" />
                       <div>
-                        <p className="text-sm opacity-80">Sunset</p>
-                        <p className="font-semibold">
+                        <p className="text-xs text-gray-300">Sunset</p>
+                        <p className="font-semibold text-white">
                           {convertUnixToTime(weather.sys.sunset, weather.timezone)}
                         </p>
                       </div>
@@ -262,12 +262,12 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="mt-4 bg-white/10 p-4 rounded-xl">
+              <div className="mt-4 bg-gray-700/50 p-4 rounded-xl">
                 <div className="flex items-center gap-2">
-                  <WiTime3 className="text-3xl" />
+                  <WiTime3 className="text-3xl text-purple-300" />
                   <div>
-                    <p className="text-sm opacity-80">Local Time</p>
-                    <p className="font-semibold">{getLocalTime(weather.timezone)}</p>
+                    <p className="text-xs text-gray-300">Local Time</p>
+                    <p className="font-semibold text-white">{getLocalTime(weather.timezone)}</p>
                   </div>
                 </div>
               </div>
@@ -275,7 +275,7 @@ function App() {
 
             {/* Forecast Section */}
             {forecast && (
-              <div className="col-span-1 md:col-span-2 bg-white/20 backdrop-blur-lg rounded-2xl p-6 shadow-lg">
+              <div className="col-span-1 md:col-span-2 bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 shadow-lg">
                 <h3 className="text-2xl font-bold mb-4 text-white">5-Day Forecast</h3>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   {forecast.list
@@ -283,17 +283,17 @@ function App() {
                     .map((item, index) => (
                       <div
                         key={index}
-                        className="bg-white/10 p-4 rounded-xl text-white text-center"
+                        className="bg-gray-700/50 p-4 rounded-xl text-center"
                       >
-                        <p className="font-semibold">
+                        <p className="font-semibold text-gray-200">
                           {new Date(item.dt * 1000).toLocaleDateString("en-US", {
                             weekday: "short",
                           })}
                         </p>
-                        <p className="text-2xl font-bold my-2">
+                        <p className="text-2xl font-bold my-2 text-white">
                           {Math.round(item.main.temp)}°C
                         </p>
-                        <p className="text-sm opacity-80">
+                        <p className="text-sm text-gray-300">
                           {item.weather[0].description}
                         </p>
                       </div>
