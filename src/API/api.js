@@ -46,3 +46,28 @@ export const getForecastData = async (latLon) => {
     throw error; // Re-throw the error for handling in App.js
   }
 };
+
+export const getAirQualityData = async (lat, lon) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+    );
+    if (!response.ok) throw new Error("Could not fetch air quality data");
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching air quality data:", error);
+    throw error;
+  }
+};
+
+// AQI description mapping
+export const getAQIDescription = (aqi) => {
+  const descriptions = {
+    1: { level: "Good", color: "text-green-500", description: "Air quality is satisfactory" },
+    2: { level: "Fair", color: "text-yellow-500", description: "Moderate air quality" },
+    3: { level: "Moderate", color: "text-orange-500", description: "Unhealthy for sensitive groups" },
+    4: { level: "Poor", color: "text-red-500", description: "Unhealthy air quality" },
+    5: { level: "Very Poor", color: "text-purple-500", description: "Very unhealthy air quality" }
+  };
+  return descriptions[aqi] || { level: "Unknown", color: "text-gray-500", description: "No data available" };
+};
