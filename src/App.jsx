@@ -90,124 +90,158 @@ function App() {
   };
 
   return (
-    <div className="app bg-purple-100 min-h-screen flex flex-col items-center p-4">
-      <h1 className="text-3xl font-bold text-center mb-4 text-purple-800">
-        Weather App
-      </h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 p-4 md:p-8">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-4xl md:text-5xl font-bold text-center mb-8 text-white drop-shadow-lg">
+          Weather Dashboard
+        </h1>
 
-      <form onSubmit={handleSearch} className="flex mb-4 w-full max-w-lg">
-        <input
-          type="text"
-          placeholder="Search by city name"
-          className="rounded-l-lg border border-purple-300 px-4 py-2 w-full focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button
-          type="submit"
-          className="bg-purple-600 text-white px-4 py-2 rounded-r-lg hover:bg-purple-700 transition duration-300 ease-in-out transform hover:scale-105"
-        >
-          Search
-        </button>
-      </form>
+        <form onSubmit={handleSearch} className="flex mb-8 w-full max-w-lg mx-auto">
+          <input
+            type="text"
+            placeholder="Search by city name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 px-4 py-3 rounded-l-lg border-0 focus:ring-2 focus:ring-purple-300 focus:outline-none text-gray-700"
+          />
+          <button
+            type="submit"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-r-lg transition-colors duration-200"
+          >
+            Search
+          </button>
+        </form>
 
-      {error && <p className="text-red-500">{error}</p>}
-
-      {loading ? (
-        <Loader />
-      ) : (
-        weather && (
-          <div className="current-weather bg-white shadow-lg rounded-lg p-6 mb-4 w-full max-w-md">
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              <FiMapPin className="text-purple-600" />
-              {weather.name}, {weather.sys.country}
-            </h2>
-            <div className="flex justify-between items-center mt-2">
-              <div className="flex flex-col items-center">
-                <img
-                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}.png`}
-                  alt={weather.weather[0].description}
-                  className="w-20 h-20"
-                />
-                <p className="text-gray-600 capitalize">
-                  {weather.weather[0].description}
-                </p>
-              </div>
-              <p className="text-5xl font-bold">
-                {Math.round(weather.main.temp)}°C
-              </p>
-            </div>
-            <div className="flex justify-around mt-4">
-              <div className="flex items-center gap-2">
-                <FaTemperatureLow className="text-blue-600" />
-                <p>Min: {Math.round(weather.main.temp_min)}°C</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <FaTemperatureHigh className="text-red-600" />
-                <p>Max: {Math.round(weather.main.temp_max)}°C</p>
-              </div>
-            </div>
-            <div className="flex justify-around mt-4">
-              <div className="flex items-center gap-2">
-                <FaWind className="text-gray-600" />
-                <p>Wind: {weather.wind.speed} m/s</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <MdOutlineWbSunny className="text-yellow-600" />
-                <p>
-                  Sunrise:{" "}
-                  {convertUnixToTime(weather.sys.sunrise, weather.timezone)}
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <WiSunset className="text-orange-600" />
-                <p>
-                  Sunset:{" "}
-                  {convertUnixToTime(weather.sys.sunset, weather.timezone)}
-                </p>
-              </div>
-            </div>
-
-            {/* Local Time with Clock Icon */}
-            <div className="flex justify-center items-center mt-4">
-              <FaClock className="text-purple-600" />
-              <p className="ml-2">
-                Local Time: {getLocalTime(weather.timezone)}
-              </p>
-            </div>
+        {loading && <Loader />}
+        {error && (
+          <div className="text-red-500 bg-white/80 rounded-lg p-4 mb-4 text-center">
+            {error}
           </div>
-        )
-      )}
+        )}
 
-      {forecast && (
-        <div className="forecast bg-white shadow-lg rounded-lg p-6 w-full max-w-md mt-4">
-          <h2 className="text-xl font-semibold">5-Day Forecast</h2>
-          <div className="grid grid-cols-1 gap-4">
-            {forecast.list.map(
-              (item, index) =>
-                index % 8 === 0 && (
-                  <div
-                    key={index}
-                    className="forecast-item bg-gray-200 p-4 rounded-lg flex justify-between items-center"
-                  >
-                    <div>
-                      <p className="font-bold">
-                        {new Date(item.dt * 1000).toLocaleDateString()}
-                      </p>
-                      <p>{Math.round(item.main.temp)}°C</p>
-                      <p>{item.weather[0].description}</p>
-                    </div>
-                    <img
-                      src={`http://openweathermap.org/img/wn/${item.weather[0].icon}.png`}
-                      alt={item.weather[0].description}
-                      className="w-12 h-12"
-                    />
+        {weather && !loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Current Weather Card */}
+            <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-3xl font-bold flex items-center gap-2">
+                    <FiMapPin className="text-2xl" />
+                    {weather.name}
+                  </h2>
+                  <p className="text-lg opacity-90">{weather.sys.country}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-5xl font-bold">{Math.round(weather.main.temp)}°C</p>
+                  <p className="text-lg">{weather.weather[0].description}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                  <FaTemperatureLow className="text-xl" />
+                  <div>
+                    <p className="text-sm opacity-80">Min</p>
+                    <p className="font-semibold">{Math.round(weather.main.temp_min)}°C</p>
                   </div>
-                )
+                </div>
+                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                  <FaTemperatureHigh className="text-xl" />
+                  <div>
+                    <p className="text-sm opacity-80">Max</p>
+                    <p className="font-semibold">{Math.round(weather.main.temp_max)}°C</p>
+                  </div>
+                </div>
+                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                  <FaWind className="text-xl" />
+                  <div>
+                    <p className="text-sm opacity-80">Wind</p>
+                    <p className="font-semibold">{weather.wind.speed} m/s</p>
+                  </div>
+                </div>
+                <div className="bg-white/10 p-3 rounded-xl flex items-center gap-2">
+                  <MdOutlineWbSunny className="text-xl" />
+                  <div>
+                    <p className="text-sm opacity-80">Humidity</p>
+                    <p className="font-semibold">{weather.main.humidity}%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Sun Times Card */}
+            <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 shadow-lg text-white">
+              <h3 className="text-2xl font-bold mb-4">Sun Schedule</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white/10 p-4 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <FaSun className="text-2xl text-yellow-400" />
+                      <div>
+                        <p className="text-sm opacity-80">Sunrise</p>
+                        <p className="font-semibold">
+                          {convertUnixToTime(weather.sys.sunrise, weather.timezone)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white/10 p-4 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <WiSunset className="text-2xl text-orange-400" />
+                      <div>
+                        <p className="text-sm opacity-80">Sunset</p>
+                        <p className="font-semibold">
+                          {convertUnixToTime(weather.sys.sunset, weather.timezone)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 bg-white/10 p-4 rounded-xl">
+                <div className="flex items-center gap-2">
+                  <FaClock className="text-xl" />
+                  <div>
+                    <p className="text-sm opacity-80">Local Time</p>
+                    <p className="font-semibold">{getLocalTime(weather.timezone)}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Forecast Section */}
+            {forecast && (
+              <div className="col-span-1 md:col-span-2 bg-white/20 backdrop-blur-lg rounded-2xl p-6 shadow-lg">
+                <h3 className="text-2xl font-bold mb-4 text-white">5-Day Forecast</h3>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  {forecast.list
+                    .filter((item, index) => index % 8 === 0)
+                    .map((item, index) => (
+                      <div
+                        key={index}
+                        className="bg-white/10 p-4 rounded-xl text-white text-center"
+                      >
+                        <p className="font-semibold">
+                          {new Date(item.dt * 1000).toLocaleDateString("en-US", {
+                            weekday: "short",
+                          })}
+                        </p>
+                        <p className="text-2xl font-bold my-2">
+                          {Math.round(item.main.temp)}°C
+                        </p>
+                        <p className="text-sm opacity-80">
+                          {item.weather[0].description}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              </div>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
